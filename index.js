@@ -74,17 +74,25 @@ app.post('/InsertLogin', function (request, res) {
   // Design submit post details 
 app.post('/InsertDesign', cors(), function (request, res) {
     //_sqlPackage.close();
-    debugger;
     var DesignName = request?.body?.DesignName;
     var DesignDescription = request.body.DesignDescription;
     let Sqlquery = "exec DesignUpdate @DesignName='" + DesignName + "', @DesignDescription='" + DesignDescription  + "'";
     QueryToExecuteInDatabase(res, Sqlquery);
 });
 
+ // delete designs based on ID 
+  app.post('/deleteDesigns', cors(), function (request, res) {
+    //_sqlPackage.close();
+    var DesignId = request?.body?.DesignID;
+    let Sqlquery = "delete from ds_Design where DesignID =" + DesignId;
+    QueryToExecuteInDatabase(res, Sqlquery);
+});
+
+
 // Login GET Designs API  with inline query
 app.get('/getDesigns', function (_req, _res) {
   _sqlPackage.close();
-    var Sqlquery = "select DesignName, DesignDescription from [ds_design]"; 
+    var Sqlquery = "select DesignID, DesignName, DesignDescription, Icon from [ds_design]"; 
     QueryToExecuteInDatabase(_res, Sqlquery);  
 });
 
